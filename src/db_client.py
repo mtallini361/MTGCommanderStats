@@ -36,9 +36,7 @@ class CommanderDBClient:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS decks (
                     deck_id SERIAL PRIMARY KEY,
-                    player_id INT REFERENCES players(player_id),
-                    name TEXT,
-                    commanders ARRAY(TEXT) NOT NULL
+                    player_id INT REFERENCES players(player_id)
                 )
             """)
             self.conn.commit()
