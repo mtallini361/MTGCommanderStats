@@ -75,8 +75,7 @@ class CommanderDBClient:
                     turn_order INT NOT NULL,
                     winner BOOLEAN NOT NULL DEFAULT FALSE,
                     last_turn INT,
-                    result_reason TEXT,
-                    defeated_by INT REFERENCES players(player_id)
+                    result_reason TEXT
                 )
             """)
             self.conn.commit()
