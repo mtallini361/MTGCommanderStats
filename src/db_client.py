@@ -70,6 +70,7 @@ class CommanderDBClient:
                 CREATE TABLE IF NOT EXISTS game_players (
                     game_id INT REFERENCES games(game_id),
                     player_id INT REFERENCES players(player_id),
+                    deck_id INT REFERENCES decks(deck_id),
                     PRIMARY KEY (game_id, player_id)
                 )
             """)
