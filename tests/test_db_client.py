@@ -101,3 +101,72 @@ class TestCreateDeckTable:
         client.create_deck_table()
 
         mock_conn.commit.assert_called_once()
+
+@patch("db_client.psycopg.connect")
+class TestCreateDeckCommandersTable:
+    def test_creates_deck_commanders_table(self, mock_connect):
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__ = lambda s: mock_cursor
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        client = CommanderDBClient("postgresql://test")
+        client.create_deck_commanders_table()
+
+        sql = mock_cursor.execute.call_args[0][0]
+        assert "CREATE TABLE IF NOT EXISTS deck_commanders" in sql
+
+    def test_references_decks_and_commanders_tables(self, mock_connect):
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__ = lambda s: mock_cursor
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        client = CommanderDBClient("postgresql://test")
+        client.create_deck_commanders_table()
+
+        sql = mock_cursor.execute.call_args[0][0]
+        assert "REFERENCES decks(deck_id)" in sql
+        assert "REFERENCES commanders(commander_id)" in sql
+
+    def test_commits_after_create(self, mock_connect):
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__ = lambda s: mock_cursor
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        client = CommanderDBClient("postgresql://test")
+        client.create_deck_commanders_table()
+
+        mock_conn.commit.assert_called_once()
+
+
+@patch("db_client.psycopg.connect")
+class TestCreateGameTable:
+    def test_creates_games_table(self, mock_connect):
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__ = lambda s: mock_cursor
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        client = CommanderDBClient("postgresql://test")
+        client.create_game_table()
+
+        sql = mock_cursor.execute.call_args[0][0]
+        assert "CREATE TABLE IF NOT EXISTS games" in sql
+
+    def test_commits_after_create(self, mock_connect):
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__ = lambda s: mock_cursor
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        client = CommanderDBClient("postgresql://test")
+        client.create_game_table()
+
+        mock_conn.commit.assert_called_once()
