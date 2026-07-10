@@ -1,23 +1,53 @@
-# Import packages
-from dash import Dash, html
-import dash_ag_grid as dag
+# Run this app with `python app.py` and
+# visit http://127.0.0.1:8050/ in your web browser.
+
+
+from dash import Dash, dcc, html
+import plotly.express as px
 import pandas as pd
 
-# Incorporate data
-df = pd.read_csv('/home/mtall/MTGCommanderStats/game_records.csv')
-
-# Initialize the app
 app = Dash()
 
-# App layout
-app.layout = [
-    html.Div(children='My First App with Data'),
-    dag.AgGrid(
-        rowData=df.to_dict('records'),
-        columnDefs=[{"field": i} for i in df.columns]
-    )
-]
+colors = {
+    'background': '#111111',
+    'text': '#7FDBFF'
+}
 
-# Run the app
+# assume you have a "long-form" data frame
+# see https://plotly.com/python/px-arguments/ for more options
+df = pd.DataFrame({
+    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
+    "Amount": [4, 1, 2, 2, 4, 5],
+    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
+})
+
+fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
+
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+    html.H1(
+        children='Hello Dash',
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
+    ),
+
+    html.Div(children='Dash: A web application framework for your data.', style={
+        'textAlign': 'center',
+        'color': colors['text']
+    }),
+
+    dcc.Graph(
+        id='example-graph-2',
+        figure=fig
+    )
+])
+
 if __name__ == '__main__':
     app.run(debug=True)

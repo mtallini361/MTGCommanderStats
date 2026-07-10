@@ -1,0 +1,15 @@
+CREATE TABLE commandergames (
+    game_night int,
+    day date,
+    game_number int,
+    game_turn int,
+    player_name varchar(30),
+    win bool,
+    defeat_reason varchar(10),
+    defeat_player_name varchar(30), 
+    defeat_turn int,
+    commander_name varchar(30),
+    color_identity varchar(15),
+    variant varchar(20),
+    player_count int
+);
